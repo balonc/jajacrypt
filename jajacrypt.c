@@ -1,12 +1,8 @@
 #include <stdio.h>
 
-int main(int argc, char **argv)
+char *binarization(char *filename)
 {
-    char *filename;
     int counter = 0;
-    filename = argv[1];
-    printf("The string is: %s", filename);
-
     while(filename[counter] != '\0')
     {
         if(filename[counter] == 'J')
@@ -19,6 +15,19 @@ int main(int argc, char **argv)
         }
         counter++;
     }
+
+    return filename;
+
+}
+
+int main(int argc, char **argv)
+{
+    char *filename;    
+    filename = argv[1];
+    printf("The string is: %s", filename);
+
+    binarization(filename);
+
     printf("\nBinary string: %s\n", filename);
 
     return 0;
