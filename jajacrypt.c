@@ -52,25 +52,33 @@ void binaryToText(char *binary, int binaryLength, char *text, int symbolCount)
 
 int main(int argc, char **argv)
 {
-    char *filename;    
-    filename = argv[1];
-    //printf("The string is: %s", filename);
+    char *filename;
+    char *argument;
+    char *crypt = "crypt";
+    char *decrypt = "decrypt";
+    argument = argv[1];  
+    filename = argv[2];
 
     binarization(filename);
 
-    //printf("\nBinary string: %s\n", filename);
+    if (strcmp(argument,crypt) == 0)
+    {
+        printf("Crypting\n");
+    }
+    else if (strcmp(argument,decrypt) == 0)
+    {
+        char *text;
+        int binaryLength, symbolCount;
 
-    char *text;
-    int binaryLength, symbolCount;
+        binaryLength = strlen(filename);
+        symbolCount = binaryLength / 8 + 1;
+        text = malloc(symbolCount + 1);
 
-    binaryLength = strlen(filename);
-    symbolCount = binaryLength / 8 + 1;
-    text = malloc(symbolCount + 1);
+        binaryToText(filename, binaryLength, text, symbolCount);
+        printf("%s\n", text);
         
-    binaryToText(filename, binaryLength, text, symbolCount);
-    printf("%s\n", text);
-    
-    free(text);
+        free(text);
+    }
 
     return 0;
 }
