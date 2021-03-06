@@ -50,6 +50,46 @@ void binaryToText(char *binary, int binaryLength, char *text, int symbolCount)
     text -= symbolCount;
 }
 
+char* decimalToBinary(long decimal)
+{
+    char *binary = malloc(65);
+    if(binary == NULL)
+        exit(1);
+    binary += 64;
+    *binary = '\0';
+    if(decimal == 0)
+    {
+        --binary;
+        *binary = '0';
+    }
+    while(decimal > 0)
+    {
+        --binary;
+        *binary = decimal % 2 + '0';
+        decimal = decimal / 2;
+    }
+    return binary;
+}
+
+void textToBinary(char *text, int textLength, char *binary, int binaryLength)
+{
+    char *octet = malloc(9);
+    if(octet == NULL)
+        exit(1);
+    while(*text)
+    {
+        decimalToBinary(*text);
+        while(*octet)
+            *binary++ = *octet++;
+        *binary++ = ' ';
+        ++text;
+        octet -= 8;
+    }
+    *binary = '\0';
+    binary -= binaryLength;
+    free(octet);
+}
+
 int main(int argc, char **argv)
 {
     char *filename;
@@ -63,7 +103,20 @@ int main(int argc, char **argv)
 
     if (strcmp(argument,crypt) == 0)
     {
-        printf("Crypting\n");
+        char text[101];
+        char *binary;
+        int textLength, binaryLength;
+        
+        scanf("%100[^\n]s", text);
+        textLength = strlen(text);
+        binaryLength = textLength * 9;      // 8 binary digits + 1 space separator
+        binary = malloc(binaryLength + 1);  // + 1 null terminator
+        if (binary == NULL) exit(1);
+        
+        textToBinary(text, textLength, binary, binaryLength);
+        printf("Your binary encoding is:\n%s\n", binary);
+        
+        free(binary);
     }
     else if (strcmp(argument,decrypt) == 0)
     {
